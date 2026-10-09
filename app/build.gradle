@@ -1,0 +1,45 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.rahul.leecoglasslauncher'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.rahul.leecoglasslauncher'
+        // 19 = Android 4.4 ... works on Android 5 / 6 TVs (the old minSdk 23 refused to install on Android 5)
+        minSdk 19
+        // 22 = no runtime-permission model, safest for old TV firmware
+        targetSdk 22
+        versionCode 3
+        versionName '2.1.0'
+    }
+
+    // One fixed key kept in the repo, so every build (also on GitHub) is signed the same
+    // and updates install over older versions.
+    signingConfigs {
+        launcher {
+            storeFile file('launcher.keystore')
+            storePassword 'android'
+            keyAlias 'launcher'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug { signingConfig signingConfigs.launcher }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.launcher
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
